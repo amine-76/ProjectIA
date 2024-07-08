@@ -1,16 +1,35 @@
-# This is a sample Python script.
+import speech_recognition as sr
+import openai
+import pyttsx3
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+engine = pyttsx3.init()
 
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def listen():
+ r = sr.Recognizer()
+ with sr.Microphone() as source:
+     print("Listening...")
+     audio = r.listen(source)
+     try:
+         text = r.recognize_google_cloud(audio, language='fr-FR')
+         print(f"You said: {text}")
+         return text
+     except sr.UnknownValueError:
+         print("Sorry we could not understand audio")
+         return "None"
+     except sr.RequestError as e:
+         print("Could not request results from Google Speech")
+         return "None"
+
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    while True :
+        print("Welcome to the Amine Project ! \n")
+        print("It's your turn !")
+        text = listen()
+        print("You said: " + text)
